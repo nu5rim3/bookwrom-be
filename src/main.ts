@@ -4,6 +4,7 @@ import { WinstonModule } from 'nest-winston';
 import * as dotenv from 'dotenv';
 import { winstonLogger } from './logger/logger.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './common/http-exception.filter';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ async function bootstrap() {
       instance: winstonLogger,
     }),
   });
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('BookWorm API')
